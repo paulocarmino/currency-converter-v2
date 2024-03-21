@@ -9,6 +9,21 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
   <body>
-    <%= yield %>
+    <div class="flex flex-col min-h-screen">
+      <%= image_tag "beams.jpeg", class: "absolute top-1/2 left-1/2 h-screen max-w-none -translate-x-1/2 -translate-y-1/2 z-[-1]" %>
+      <div
+        class="absolute inset-0 bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] h-screen z-[-1]">
+      </div>
+
+      <div class="flex relative flex-col flex-1">
+        <%= render 'shared/topbar' %>
+
+        <main class="flex flex-grow justify-center items-center px-4 py-2">
+          <%= yield %>
+        </main>
+
+        <%= render 'shared/footer' %>
+      </div>
+    </div>
   </body>
 </html>
