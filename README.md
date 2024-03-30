@@ -1,24 +1,42 @@
-# README
+# Currency Converter V2
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a currency converter application built using Ruby on Rails.
 
-Things you may want to cover:
+## Features
 
-* Ruby version
+- Convert between different currencies
+- Fetches real-time exchange rates from a reliable API
+- Supports multiple currencies
+- User-friendly interface
 
-* System dependencies
+## Installation
 
-* Configuration
+1. Clone the repository:
 
-* Database creation
+    ```bash
+    git clone https://github.com/paulocarmino/currency-converter.git
+    ```
 
-* Database initialization
+2. Install the required dependencies:
 
-* How to run the test suite
+    ```bash
+    bundle install
+    ```
 
-* Services (job queues, cache servers, search engines, etc.)
+4. Start the server:
 
-* Deployment instructions
+    ```bash
+    bin/dev
+    ```
 
-* ...
+5. Open your browser and navigate to `http://localhost:3000` to access the application.
+
+## Usage
+
+1. Enter the amount you want to convert and select the source currency.
+2. Choose the target currency you want to convert to.
+3. Click the "Convert" button to see the converted amount.
+
+## Contributing
+
+Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
