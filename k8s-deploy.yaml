@@ -1,0 +1,80 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+ name: currency-converter
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: currency-converter
+ namespace: currency-converter
+spec:
+ ports:
+  - name: http-web
+    protocol: TCP
+    port: 80
+    targetPort: 3000
+ selector:
+   app: currency-converter
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: currency-converter-secrets
+  namespace: currency-converter
+type: Opaque
+data:
+  RAILS_MASTER_KEY: OGQzYzJiOTAyZTE0MmY4YWViNDNhZThkNTdkMGZlMTA=
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: currency-converter
+  namespace: currency-converter
+  annotations:
+   cert-manager.io/cluster-issuer: letsencrypt-staging
+spec:
+  selector:
+    matchLabels:
+      app: currency-converter
+  template:
+    metadata:
+      labels:
+        app: currency-converter
+    spec:
+      containers:
+        - name: currency-converter-rails
+          image: paulocarmino/currency-converter:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: RAILS_MASTER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: currency-converter-secrets
+                  key: RAILS_MASTER_KEY
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: currency-converter-ingress-tls
+  namespace: currency-converter
+  annotations:
+   cert-manager.io/cluster-issuer: letsencrypt-staging
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: converter.paulocarmino.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: currency-converter
+                port:
+                  number: 80
+  tls:
+    - hosts:
+       - converter.paulocarmino.com
+      secretName: some-secret-name-tls
